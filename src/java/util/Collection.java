@@ -141,7 +141,7 @@ import java.util.stream.StreamSupport;
  * @since 1.2
  */
 
-public interface Collection<E> extends Iterable<E> {
+public interface Collection<E> extends Iterable<E> {// 每一个集合子类应该实现迭代功能
     // Query Operations
 
     /**
