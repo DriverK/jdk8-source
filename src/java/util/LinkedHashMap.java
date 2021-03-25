@@ -190,7 +190,7 @@ public class LinkedHashMap<K,V>
      * HashMap.Node subclass for normal LinkedHashMap entries.
      */
     static class Entry<K,V> extends HashMap.Node<K,V> {
-        Entry<K,V> before, after;
+        Entry<K,V> before, after; // before关联之前的节点，after关联之后的节点
         Entry(int hash, K key, V value, Node<K,V> next) {
             super(hash, key, value, next);
         }
@@ -221,11 +221,11 @@ public class LinkedHashMap<K,V>
     // link at the end of list
     private void linkNodeLast(LinkedHashMap.Entry<K,V> p) {
         LinkedHashMap.Entry<K,V> last = tail;
-        tail = p;
-        if (last == null)
+        tail = p; // 新加入的节点设置成链表的尾节点
+        if (last == null) // 判断链表尾部节点对象是否为空，如果为空说明现在链表还没有节点，将当前节点设置为头节点
             head = p;
-        else {
-            p.before = last;
+        else { // 链表的双向绑定
+            p.before = last; // 将插入节点的before与链表的尾部节点关联,将链表的尾部节的after与插入节点
             last.after = p;
         }
     }
@@ -696,8 +696,8 @@ public class LinkedHashMap<K,V>
         int expectedModCount;
 
         LinkedHashIterator() {
-            next = head;
-            expectedModCount = modCount;
+            next = head; // 构建链表Hash迭代器的时候，将头节点赋值给next节点对象
+            expectedModCount = modCount; // 并且将快速失败的modCount也赋值给迭代器
             current = null;
         }
 
@@ -706,14 +706,14 @@ public class LinkedHashMap<K,V>
         }
 
         final LinkedHashMap.Entry<K,V> nextNode() {
-            LinkedHashMap.Entry<K,V> e = next;
+            LinkedHashMap.Entry<K,V> e = next; // 将next节点赋值给e
             if (modCount != expectedModCount)
                 throw new ConcurrentModificationException();
             if (e == null)
                 throw new NoSuchElementException();
-            current = e;
-            next = e.after;
-            return e;
+            current = e; // e赋值给当前节点
+            next = e.after; // 将e的after节点指向next节点
+            return e; // 返回e
         }
 
         public final void remove() {
